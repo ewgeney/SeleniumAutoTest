@@ -1,5 +1,7 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class PasswordPage {
     private WebDriver driver;
@@ -8,15 +10,17 @@ public class PasswordPage {
         this.driver=driver;
     }
 
-    private By fieldPassword = By.id("passp-field-passwd");
-    private By signInButton = By.id("passp:sign-in");
+    @FindBy(id = "passp-field-passwd")
+    private WebElement fieldPassword;
+    @FindBy(id = "passp:sign-in")
+    private WebElement signInButton;
 
     public MailboxPage clickSignIn(){
-        driver.findElement(signInButton).click();
-        return new MailboxPage(driver);
+        signInButton.click();
+        return PageFactory.initElements(driver, MailboxPage.class);
     }
     public PasswordPage setFieldPassword (String password){
-        driver.findElement(fieldPassword).sendKeys(password);
+        fieldPassword.sendKeys(password);
         return this;
     }
 }

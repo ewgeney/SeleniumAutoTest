@@ -1,5 +1,7 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class MessagePage {
     private WebDriver driver;
@@ -8,26 +10,30 @@ public class MessagePage {
         this.driver = driver;
     }
 
-    private By fieldRecipient = By.xpath("//*[@class=\"MultipleAddressesDesktop ComposeRecipients-MultipleAddressField ComposeRecipients-ToField tst-field-to\"]//*[@class=\"composeYabbles\"]");
-    private By fieldTheme = By.xpath("//*[@class = \"composeTextField ComposeSubject-TextField\"]");
-    private By fieldMessages = By.xpath("//*[@role=\"textbox\"]");
-    private By sendButton = By.xpath("//*[@class = \"Button2 Button2_pin_circle-circle Button2_view_default Button2_size_l\"]");
+    @FindBy(xpath = "//div[@class=\"ComposeRecipients-TopRow\"]//div[@class=\"composeYabbles\"]")
+    private WebElement fieldRecipient;
+    @FindBy(xpath = "//*[@class = \"composeTextField ComposeSubject-TextField\"]")
+    private WebElement fieldTheme;
+    @FindBy(xpath = "//*[@role=\"textbox\"]")
+    private WebElement fieldMessages;
+    @FindBy(xpath = "//*[@class=\"ComposeSendButton-Text\"]/../..")
+    private WebElement sendButton;
 
     public MessagePage setFieldRecipient (String recipient){
-        driver.findElement(fieldRecipient).sendKeys(recipient);
+        fieldRecipient.sendKeys(recipient);
         return this;
     }
     public MessagePage setFieldTheme (String theme){
-        driver.findElement(fieldTheme).sendKeys(theme);
+        fieldTheme.sendKeys(theme);
         return this;
     }
     public MessagePage setFieldMessages (String messages){
-        driver.findElement(fieldMessages).sendKeys(messages);
+        fieldMessages.sendKeys(messages);
         return this;
     }
 
-    public MailboxPage clickSendButton(){
-        driver.findElement(sendButton).click();
-        return new MailboxPage(driver);
+    public DonePage clickSendButton(){
+        sendButton.click();
+        return PageFactory.initElements(driver, DonePage.class);
     }
 }

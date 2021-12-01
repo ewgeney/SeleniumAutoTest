@@ -1,5 +1,8 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class MailboxPage {
     private WebDriver driver;
@@ -8,11 +11,12 @@ public class MailboxPage {
         this.driver = driver;
     }
 
-    private By newMailButton = By.xpath("//*[@class = \"mail-ComposeButton js-main-action-compose\"]");
+    @FindBy(xpath = "//*[@class = \"mail-ComposeButton js-main-action-compose\"]")
+    private WebElement newMailButton;
 
     public MessagePage clickNewMailButton() {
-        driver.findElement(newMailButton).click();
-        return new MessagePage(driver);
+        newMailButton.click();
+        return PageFactory.initElements(driver, MessagePage.class);
     }
     public int getCountMessages (String name){
         return driver.findElements(By.xpath(String.format("//*[@title=\"%s\"]", name))).size();
